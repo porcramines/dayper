@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Académico - Material de Cursos</title>
+    <style>
+        /* Estilos base */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f4f6f9;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Encabezado */
+        header {
+            background-color: #1a365d;
+            color: #fff;
+            padding: 2rem 1rem;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Barra de Control (Buscador + Menú Desplegable) */
+        .controls-bar {
+            background-color: #2b6cb0;
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .controls-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .controls-container label {
+            color: white;
+            font-weight: bold;
+        }
+
+        /* Menú desplegable y caja de búsqueda */
+        select, input[type="text"] {
+            padding: 0.6rem 1rem;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        select {
+            min-width: 250px;
+            cursor: pointer;
+            background-color: white;
+        }
+
+        input[type="text"] {
+            min-width: 250px;
+        }
+
+        /* Contenedor Principal */
+        .container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            min-height: 65vh;
+        }
+
+        /* Secciones de Cursos */
+        .curso-card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.08);
+            border-top: 4px solid #2b6cb0;
+            transition: all 0.3s ease;
+        }
+
+        .curso-card h2 {
+            color: #1a365d;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .grid-materiales {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .columna {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 1rem;
+        }
+
+        .columna h3 {
+            font-size: 1.05rem;
+            color: #2d3748;
+            margin-bottom: 0.8rem;
+        }
+
+        .lista-enlaces {
+            list-style: none;
+        }
+
+        .lista-enlaces li {
+            margin-bottom: 0.6rem;
+        }
+
+        .lista-enlaces a {
+            color: #3182ce;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .lista-enlaces a:hover {
+            text-decoration: underline;
+        }
+
+        /* Mensaje de no encontrado */
+        #noResults {
+            display: none;
+            text-align: center;
+            font-size: 1.2rem;
+            color: #718096;
+            margin-top: 3rem;
+        }
+
+        /* Pie de página */
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            background-color: #1a365d;
+            color: white;
+            margin-top: 3rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ENCABEZADO -->
+    <header>
+        <h1>Material Académico - Portal Docente</h1>
+        <p>Selecciona un curso o busca en el menú desplegable para acceder al material</p>
+    </header>
+
+    <!-- BARRA DE FILTRADO (MENÚ DESPLEGABLE Y BUSCADOR) -->
+    <div class="controls-bar">
+        <div class="controls-container">
+            <!-- Menú Desplegable -->
+            <label for="selectCurso">Curso:</label>
+            <select id="selectCurso" onchange="filtrarPorDesplegable()">
+                <option value="todos">-- Mostrar Todos los Cursos --</option>
+                <option value="mat1">Matemáticas I</option>
+                <option value="fis1">Física General</option>
+                <option value="est1">Estadística Descriptiva</option>
+                <option value="prog1">Programación en Python</option>
+                <option value="quim1">Química General</option>
+                <!-- Agrega aquí tus 30 opciones de cursos -->
+            </select>
+
+            <!-- Buscador por Texto -->
+            <input type="text" id="inputBuscar" onkeyup="filtrarPorTexto()" placeholder="🔍 Escribe para buscar curso...">
+        </div>
+    </div>
+
+    <!-- CONTENEDOR DE CURSOS -->
+    <div class="container">
+
+        <!-- CURSO 1 -->
+        <div class="curso-card" id="mat1" data-nombre="matematicas 1">
+            <h2>📐 Matemáticas I</h2>
+            <div class="grid-materiales">
+                <div class="columna">
+                    <h3>📘 Teoría y Apuntes</h3>
+                    <ul class="lista-enlaces">
+                        <li><a href="https://drive.google.com/..." target="_blank">📄 Unidad 1: Álgebra (PDF)</a></li>
+                        <li><a href="https://drive.google.com/..." target="_blank">📄 Unidad 2: Funciones (PDF)</a></li>
+                    </ul>
+                </div>
+                <div class="columna">
+                    <h3>✏️ Ejercicios y Solucionarios</h3>
+                    <ul class="lista-enlaces">
+                        <li><a href="https://drive.google.com/..." target="_blank">📝 Guía N° 1 de Ejercicios</a></li>
+                        <li><a href="https://drive.google.com/..." target="_blank">📝 Solucionario Examen Parcial</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- CURSO 2 -->
+        <div class="curso-card" id="fis1" data-nombre="fisica general">
+            <h2>⚡ Física General</h2>
+            <div class="grid-materiales">
+                <div class="columna">
+                    <h3>📘 Teoría</h3>
+                    <ul class="lista-enlaces">
+                        <li><a href="https://drive.google.com/..." target="_blank">📄 Diapositivas: Cinemática</a></li>
+                    </ul>
+                </div>
+                <div class="columna">
+                    <h3>✏️ Ejercicios</h3>
+                    <ul class="lista-enlaces">
+                        <li><a href="https://drive.google.com/..." target="_blank">📝 Guía de Laboratorio N° 1</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- CURSO 3 -->
+        <div class="curso-card" id="est1" data-nombre="estadistica descriptiva">
+            <h2>📊 Estadística Descriptiva</h2>
+            <div class="grid-materiales">
+                <div class="columna">
+                    <h3>📘 Teoría</h3>
+                    <ul class="lista-enlaces">
+                        <li><a href="https://drive.google.com/..." target="_blank">📄 Conceptos de Probabilidad</a></li>
+                    </ul>
+                </div>
+                <div class="columna">
+                    <h3>✏️ Ejercicios</h3>
+                    <ul class="lista-enlaces">
+                        <li><a href="https://drive.google.com/..." target="_blank">📝 Guía de Tablas Frecuenciales</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- CURSO 4 -->
+        <div class="curso-card" id="prog1" data-nombre="programacion en python">
+            <h2>💻 Programación en Python</h2>
+            <div class="grid-materiales">
+                <div class="columna">
+                    <h3>📘 Teoría</h3>
+                    <ul class="lista-enlaces">
+                        <li><a href="https://drive.google.com/..." target="_blank">📄 Introducción a Sintaxis</a></li>
+                    </ul>
+                </div>
+                <div class="columna">
+                    <h3>✏️ Ejercicios</h3>
+                    <ul class="lista-enlaces">
+                        <li><a href="https://drive.google.com/..." target="_blank">📝 Desafíos de Código N° 1</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- CURSO 5 -->
+        <div class="curso-card" id="quim1" data-nombre="quimica general">
+            <h2>🧪 Química General</h2>
+            <div class="grid-materiales">
+                <div class="columna">
+                    <h3>📘 Teoría</h3>
+                    <ul class="lista-enlaces">
+                        <li><a href="https://drive.google.com/..." target="_blank">📄 Tabla Periódica y Enlaces</a></li>
+                    </ul>
+                </div>
+                <div class="columna">
+                    <h3>✏️ Ejercicios</h3>
+                    <ul class="lista-enlaces">
+                        <li><a href="https://drive.google.com/..." target="_blank">📝 Ejercicios Balance de Ecuaciones</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mensaje de aviso cuando no hay resultados de búsqueda -->
+        <div id="noResults">No se encontró ningún curso con ese nombre.</div>
+
+    </div>
+
+    <!-- PIE DE PÁGINA -->
+    <footer>
+        <p>© Portal Docente - Todos los derechos reservados</p>
+    </footer>
+
+    <!-- LÓGICA DE FILTRADO Y BÚSQUEDA EN JAVASCRIPT -->
+    <script>
+        // Filtrar usando el Menú Desplegable
+        function filtrarPorDesplegable() {
+            let valorSeleccionado = document.getElementById("selectCurso").value;
+            let cursos = document.querySelectorAll(".curso-card");
+            
+            // Limpiar la caja de texto al seleccionar del desplegable
+            document.getElementById("inputBuscar").value = "";
+            document.getElementById("noResults").style.display = "none";
+
+            cursos.forEach(curso => {
+                if (valorSeleccionado === "todos") {
+                    curso.style.display = "block";
+                } else {
+                    if (curso.id === valorSeleccionado) {
+                        curso.style.display = "block";
+                    } else {
+                        curso.style.display = "none";
+                    }
+                }
+            });
+        }
+
+        // Filtrar escribiendo en la caja de texto
+        function filtrarPorTexto() {
+            let texto = document.getElementById("inputBuscar").value.toLowerCase();
+            let cursos = document.querySelectorAll(".curso-card");
+            let visibles = 0;
+
+            // Restablecer el valor del desplegable
+            document.getElementById("selectCurso").value = "todos";
+
+            cursos.forEach(curso => {
+                let nombreCurso = curso.getAttribute("data-nombre");
+                if (nombreCurso.includes(texto)) {
+                    curso.style.display = "block";
+                    visibles++;
+                } else {
+                    curso.style.display = "none";
+                }
+            });
+
+            // Mostrar mensaje si no hay resultados
+            let noRes = document.getElementById("noResults");
+            if (visibles === 0) {
+                noRes.style.display = "block";
+            } else {
+                noRes.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>
